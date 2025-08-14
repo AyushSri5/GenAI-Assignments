@@ -3,9 +3,7 @@ import { OpenAI } from 'openai';
 
 const client = new OpenAI();
 // const client = new OpenAI({
-//     baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
-//     apiKey: "AIzaSyC9MExpSwNHezVOhY_0gDnU-oBEwHo7pi4"
-// });
+
 
 async function main() {
   // These api calls are stateless (Chain Of Thought)
