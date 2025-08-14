@@ -2,6 +2,7 @@
 
 A simple **custom tokenizer** in JavaScript that:
 - Learns vocab from a predefined set (no training step)
+
 - Supports **ENCODE** (text → tokens)
 - Supports **DECODE** (tokens → text)
 - Handles **special tokens** like `<PAD>`, `<UNK>`, `<CLS>`, `<SEP>`
@@ -17,3 +18,5 @@ cd custom-tokenizer-js
 
 # Run demo
 node tokenizer.js
+
+
