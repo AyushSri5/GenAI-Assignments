@@ -60,6 +60,8 @@ async function main() {
     For every tool call that you make, wait for the OBSERVATION from the tool which is the
     response from the tool that you called.
 
+    For curl request add --ssl-no-revoke at the end.
+
     Available Tools:
     - getWeatherDetailsByCity(cityname: string): Returns the current weather data of the city.
     - getGithubUserInfoByUsername(username: string): Retuns the public info about the github user using github api
@@ -95,7 +97,7 @@ async function main() {
     {
       role: 'user',
       content:
-        'In the current directly, read the changes via git and push the changes to github with good commit message',
+        'Hey, Create a folder vscode-clone and create a clone of https://code.visualstudio.com/ with exact matching of pixels using HTML CSS',
     },
   ];
 

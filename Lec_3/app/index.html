@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Simple Todo App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+        }
+
+        #todo-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        #todo-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        #add-btn {
+            margin-top: 10px;
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #eee;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='todo-container'> <input type='text' id='todo-input' placeholder='Enter a new task...' /> <button
+            id='add-btn'>Add Todo</button>
+        <ul id='todo-list'></ul>
+    </div>
+    <script>   const input = document.getElementById('todo-input'); const addBtn = document.getElementById('add-btn'); const todoList = document.getElementById('todo-list'); addBtn.addEventListener('click', () => { if (input.value.trim() !== '') { const li = document.createElement('li'); li.textContent = input.value; const delBtn = document.createElement('button'); delBtn.textContent = 'Delete'; delBtn.className = 'delete-btn'; delBtn.addEventListener('click', () => { todoList.removeChild(li); }); li.appendChild(delBtn); todoList.appendChild(li); input.value = ''; } });</script>
+</body>
+
+</html>
