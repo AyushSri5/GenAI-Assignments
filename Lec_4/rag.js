@@ -1,0 +1,28 @@
+import 'dotenv/config';
+import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf'
+import { OpenAIEmbeddings } from "@langchain/openai";
+import { QdrantVectorStore } from "@langchain/qdrant";
+async function init() {
+    const pdfFilePath = "./nodejs.pdf";
+
+    const loader = new PDFLoader(pdfFilePath);
+    const docs = await loader.load();
+
+    const embeddings = new OpenAIEmbeddings({
+  model: "text-embedding-3-large"
+}); 
+    console.log(docs);
+
+    const vectorStore = await QdrantVectorStore.fromDocuments(
+        docs,
+        embeddings,
+        {
+            url: "http://localhost:6333",
+            collectionName: "ayush-collection",
+        }
+    )
+    console.log("Indexing of documents completed");
+    
+}
+
+init();
