@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import {  NextResponse } from "next/server";
 import formidable, { File } from "formidable";
 import fs from "fs";
 import path from "path";
@@ -8,7 +8,7 @@ import { OpenAIEmbeddings } from "@langchain/openai";
 import { QdrantVectorStore } from "@langchain/qdrant";
 
 // Convert Web ReadableStream → Node Readable
-async function toNodeStream(webStream: ReadableStream<Uint8Array>) {
+async function toNodeStream(webStream) {
   const reader = webStream.getReader();
   return new Readable({
     async read() {
@@ -22,7 +22,7 @@ async function toNodeStream(webStream: ReadableStream<Uint8Array>) {
   });
 }
 
-const parseForm = async (req: NextRequest) => {
+const parseForm = async (req) => {
   const uploadDir = path.join(process.cwd(), "tmp");
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
@@ -34,13 +34,13 @@ const parseForm = async (req: NextRequest) => {
     keepExtensions: true,
   });
 
-  const nodeReq = await toNodeStream(req.body!); // convert NextRequest.body
+  const nodeReq = await toNodeStream(req.body); // convert NextRequest.body
   // formidable needs headers to parse multipart
-  (nodeReq as any).headers = Object.fromEntries(req.headers);
+  (nodeReq).headers = Object.fromEntries(req.headers);
 
-  return new Promise<{ fields: formidable.Fields; files: formidable.Files }>(
+  return new Promise(
     (resolve, reject) => {
-      form.parse(nodeReq as any, (err, fields, files) => {
+      form.parse(nodeReq, (err, fields, files) => {
         if (err) reject(err);
         else resolve({ fields, files });
       });
@@ -48,9 +48,10 @@ const parseForm = async (req: NextRequest) => {
   );
 };
 
-export async function POST(req: NextRequest) {
+export async function POST(req) {
   try {
     const { files } = await parseForm(req);
+    // console.log("Received file:", formData.get("file"));
     const uploadedFile = Array.isArray(files.file) ? files.file[0] : files.file; // field name = "file"
     if (!uploadedFile) {
       throw new Error("No file uploaded");
@@ -71,7 +72,7 @@ export async function POST(req: NextRequest) {
       embeddings,
       {
         url: "http://localhost:6333",
-        collectionName: "ayush-collection",
+        collectionName: "notebook-llm",
       }
     );
     console.log("Indexing of documents completed");
