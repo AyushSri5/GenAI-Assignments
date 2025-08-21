@@ -4,6 +4,7 @@ import { useState } from "react";
 export default function TextAndYouTubeInput() {
   const [text, setText] = useState("");
   const [url, setUrl] = useState("");
+  const [website, setWebsite] = useState("");
 
   const handleTextSubmit = async () => {
     await fetch("/api/upload", {
@@ -22,8 +23,17 @@ export default function TextAndYouTubeInput() {
     setUrl("");
   };
 
+  const handleWebsiteSubmit = async () => {
+    await fetch("/api/url", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: website }),
+    });
+    setWebsite("");
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] p-6 bg-gray-50">
+    <div className="flex flex-col items-center justify-center min-h-[80vh] p-6 bg-gray-50">
       <div className="w-full max-w-lg bg-white rounded-2xl shadow-lg border border-gray-200 p-6 flex flex-col gap-6">
         
         {/* Text Input Section */}
@@ -62,6 +72,27 @@ export default function TextAndYouTubeInput() {
             className="w-full bg-red-500 hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold py-2.5 rounded-lg transition-all shadow-md"
           >
             {url.trim() ? "Upload YouTube" : "Enter a YouTube URL"}
+          </button>
+        </div>
+
+        <hr className="border-gray-200" />
+
+        {/* Website URL Section */}
+        <div className="flex flex-col gap-3">
+          <h2 className="text-lg font-semibold text-gray-700">Submit Website URL</h2>
+          <input
+            type="url"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+            placeholder="Enter website link..."
+            className="w-full rounded-lg border border-gray-300 p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 shadow-sm"
+          />
+          <button
+            onClick={handleWebsiteSubmit}
+            disabled={!website.trim()}
+            className="w-full bg-green-500 hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold py-2.5 rounded-lg transition-all shadow-md"
+          >
+            {website.trim() ? "Submit Website" : "Enter a website URL"}
           </button>
         </div>
       </div>
