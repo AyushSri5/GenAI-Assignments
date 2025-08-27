@@ -6,5 +6,5 @@ import { embeddings } from "./embeddings";
 
 export const qdrant = await QdrantVectorStore.fromExistingCollection(embeddings, {
   url: process.env.QDRANT_URL || "http://localhost:6333",
-  collectionName: "notebook-llm", // Ensure this matches your collection name
+  collectionName: "chatbot-llm", // Ensure this matches your collection name
 });
