@@ -15,7 +15,6 @@ const page = await browser.newPage();
 // Set viewport for better visibility
 await page.setViewportSize({ width: 1280, height: 720 });
 
-// ---------- Tools ----------
 const takeScreenShot = tool({
   name: 'take_screenshot',
   description: 'Take a screenshot of the current page and return base64 string. Use sparingly to avoid token limits.',
@@ -34,7 +33,6 @@ const openURL = tool({
   }),
   async execute({ url }) {
     await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
-    // Wait a bit for dynamic content to load
     await page.waitForTimeout(2000);
     return `Opened URL: ${url}`;
   },
@@ -52,21 +50,21 @@ const fillField = tool({
     try {
       console.log(`Filling ${fieldName} (${selector}) with "${text}"`);
       
-      // Wait for element and ensure it's ready
+      
       await page.waitForSelector(selector, { timeout: 15000 });
       await page.waitForTimeout(1000);
       
-      // Scroll into view if needed
+    
       await page.locator(selector).scrollIntoViewIfNeeded();
       await page.waitForTimeout(500);
       
-      // Click multiple times to ensure focus
+      
       await page.click(selector);
       await page.waitForTimeout(500);
       await page.click(selector);
       await page.waitForTimeout(1000);
       
-      // Clear field using multiple methods
+      
       await page.keyboard.press('Control+A');
       await page.waitForTimeout(300);
       await page.keyboard.press('Delete');
@@ -74,10 +72,9 @@ const fillField = tool({
       await page.keyboard.press('Backspace');
       await page.waitForTimeout(500);
       
-      // Verify field is empty
+      
       let currentValue = await page.inputValue(selector);
       if (currentValue !== '') {
-        // Force clear with fill
         await page.fill(selector, '');
         await page.waitForTimeout(500);
       }
@@ -86,13 +83,13 @@ const fillField = tool({
       for (let i = 0; i < text.length; i++) {
         const char = text[i];
         await page.keyboard.type(char);
-        await page.waitForTimeout(300); // 300ms between each character
+        await page.waitForTimeout(300); 
         
-        // Verify each character was typed correctly
+        
         const partialValue = await page.inputValue(selector);
         console.log(`After typing "${char}": field has "${partialValue}"`);
         
-        // If something went wrong, retry this character
+        
         if (!partialValue.endsWith(char)) {
           console.log(`Character "${char}" not typed correctly, retrying...`);
           await page.keyboard.press('Backspace');
@@ -102,7 +99,7 @@ const fillField = tool({
         }
       }
       
-      // Final verification
+      
       await page.waitForTimeout(1000);
       const finalValue = await page.inputValue(selector);
       const success = finalValue === text;
