@@ -1,6 +1,7 @@
 import { Agent, run, tool } from "@openai/agents";
 import 'dotenv/config';
 import z from "zod";
+import {RECOMMENDED_PROMPT_PREFIX} from '@openai/agents-core/extensions'
 
 const getCurrentTime = tool({
     name: "get_current_time",
@@ -43,17 +44,15 @@ const cookingAgent = new Agent({
 
 const codingAgent = new Agent({
     name: "Coding Agent",
-    instructions: `You are an expert coding assistant particularly in JavaScript.`,
-    tools: [cookingAgent.asTool()]
+    instructions: `You are an expert coding assistant particularly in JavaScript.`
+    // tools: [cookingAgent.asTool()]
 });
 
 const gatewayAgent = Agent.create({
     name: 'Triage Agent',
   instructions: `
-  You determine which agent to use
-
-   Please use food related queries handoff to cookingAgent
-   and for coding to codingAgent.
+  ${RECOMMENDED_PROMPT_PREFIX}
+  You are
   
   `,
   handoffs: [codingAgent,cookingAgent]
@@ -62,9 +61,10 @@ const gatewayAgent = Agent.create({
 async function main(query){
     const result = await run(gatewayAgent,query);
     console.log("History: ", result.history);
+    console.log("Hand off too",result.lastAgent.name);
     
     console.log("Final Result: ", result.finalOutput);
     
 }
 
-main("Depending on current time, what are some good food options for me also what all items are available in menu for me?");
+main("Recipe of a cake and javascript code to add two numbers");
