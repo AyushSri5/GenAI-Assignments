@@ -1,0 +1,21 @@
+{
+  "name": "lec_8",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.60.0",
+    "@qdrant/js-client-rest": "^1.15.1",
+    "dotenv": "^17.2.1",
+    "mem0ai": "^2.1.37",
+    "ollama": "^0.5.17",
+    "openai": "^5.16.0"
+  }
+}

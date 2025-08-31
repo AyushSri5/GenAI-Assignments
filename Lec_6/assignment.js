@@ -32,7 +32,7 @@ const openURL = tool({
     url: z.string().describe('The URL to open'),
   }),
   async execute({ url }) {
-    await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+    await page.goto(url, { waitUntil: 'networkidle', timeout: 300 });
     await page.waitForTimeout(2000);
     return `Opened URL: ${url}`;
   },
