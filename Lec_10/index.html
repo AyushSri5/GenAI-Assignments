@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voice to Text</title>
+</head>
+<body>
+  <h2>🎤 Voice to Text Demo</h2>
+  <button id="startBtn">Start Listening</button>
+  <button id="stopBtn">Stop Listening</button>
+  <p><strong>Final Transcription:</strong> <span id="output"></span></p>
+
+  <script>
+    // Check if the browser supports SpeechRecognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Your browser does not support Speech Recognition API. Try Chrome or Edge.");
+    } else {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false; // stop after one result
+      recognition.interimResults = false; // only final results
+      recognition.lang = "en-US";
+
+      const startBtn = document.getElementById("startBtn");
+      const stopBtn = document.getElementById("stopBtn");
+      const output = document.getElementById("output");
+
+      startBtn.addEventListener("click", () => {
+        recognition.start();
+        console.log("🎤 Listening...");
+      });
+
+      stopBtn.addEventListener("click", () => {
+        recognition.stop();
+        console.log("🛑 Stopped listening.");
+      });
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        console.log("✅ Final Transcription:", transcript);
+        output.textContent = transcript;
+      };
+
+      recognition.onerror = (event) => {
+        console.error("❌ Error:", event.error);
+      };
+
+      recognition.onend = () => {
+        console.log("Recognition ended.");
+      };
+    }
+  </script>
+</body>
+</html>
