@@ -24,15 +24,32 @@ const mem = new Memory({
 // });
 
 async function main(query = ''){
-    const response = await client.chat.completions.create({
-        model: 'gpt-4.1-mini',
-        messages: [
-            {role: 'user',content: query}
-        ]
-    });
+   const memories = await mem.search(query, { userId: 'ayush' });
+  const memStr = memories.results.map((e) => e.memory).join('\n');
 
-    console.log("Bot:",response.choices[0].message.content);
-    
+  const SYSTEM_PROMPT = `
+    Context About User:
+    ${memStr}
+  `;
+
+  const response = await client.chat.completions.create({
+    model: 'gpt-4.1-mini',
+    messages: [
+      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'user', content: query },
+    ],
+  });
+
+  console.log(`\n\n\nBot:`, response.choices[0].message.content);
+  console.log('Adding to memory...');
+  await mem.add(
+    [
+      { role: 'user', content: query },
+      { role: 'assistant', content: response.choices[0].message.content },
+    ],
+    { userId: 'ayush' } // DB
+  );
+  console.log('Adding to memory done...');
 }
 
-main('Hey Agent,You know my name is Ayush and i am from Lucknow');
+main('Hey Agent,My name is Muskan and i am from Varanasi?');
