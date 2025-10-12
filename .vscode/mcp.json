@@ -1,0 +1,22 @@
+{
+	"servers": {
+		"My-MCP": {
+			"type": "stdio",
+			"command": "{",
+			"args": [
+				"mcpServers:",
+				"{",
+				"my-mcp-server:",
+				"{",
+				"command:",
+				"node,",
+				"args:",
+				"[D:/Backend/GenAI-Assignments/Lec_11/index.js]",
+				"}",
+				"}",
+				"}"
+			]
+		}
+	},
+	"inputs": []
+}
